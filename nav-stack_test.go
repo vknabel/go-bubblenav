@@ -1,6 +1,7 @@
 package nav_test
 
 import (
+	"bytes"
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -8,10 +9,15 @@ import (
 )
 
 func TestNavStackDisplaysPushed(t *testing.T) {
+	var out bytes.Buffer
+	var in bytes.Buffer
+
 	prog := tea.NewProgram(
 		nav.NewStack(initialTestModel("initial")),
 		tea.WithoutCatchPanics(),
 		tea.WithoutRenderer(),
+		tea.WithInput(&in),
+		tea.WithOutput(&out),
 	)
 	go func() {
 		prog.Send(nav.PagePushMsg{initialTestModel("pushed")})
@@ -36,10 +42,15 @@ func TestNavStackDisplaysPushed(t *testing.T) {
 }
 
 func TestNavStackDisplaysInitialWhenPushedAndPopped(t *testing.T) {
+	var out bytes.Buffer
+	var in bytes.Buffer
+
 	prog := tea.NewProgram(
 		nav.NewStack(initialTestModel("initial")),
 		tea.WithoutCatchPanics(),
 		tea.WithoutRenderer(),
+		tea.WithInput(&in),
+		tea.WithOutput(&out),
 	)
 	go func() {
 		prog.Send(nav.PagePushMsg{initialTestModel("pushed")})
